@@ -6,10 +6,10 @@ locals {
 resource "aws_iam_role" "rdsmanager-iam" {
   name               = local.function_name
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
-  inline_policy {
+    inline_policy {
     name   = local.function_name
     policy = data.aws_iam_policy_document.rds_manager_inline_policy.json
-  }
+    }
 }
 
 resource "aws_cloudwatch_log_group" "rds_manager" {
@@ -35,10 +35,10 @@ resource "aws_lambda_function" "rds_manager" {
 resource "aws_iam_role" "rdsmanager-schedule" {
   name               = local.schedule_name
   assume_role_policy = data.aws_iam_policy_document.schedule_assume_role.json
-  inline_policy {
+    inline_policy {
     name   = local.schedule_name
     policy = data.aws_iam_policy_document.rds_manager_scheduler.json
-  }
+    }
 }
 
 #Eventbridge scheduler
@@ -54,6 +54,6 @@ resource "aws_scheduler_schedule" "rds_manager" {
   target {
     arn      = resource.aws_lambda_function.rds_manager.arn
     role_arn = aws_iam_role.rdsmanager-schedule.arn
-    input    = "{\"switch\": 0}"
+    input = "{\"switch\": 0}"
   }
 }

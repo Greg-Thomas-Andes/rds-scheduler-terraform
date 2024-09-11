@@ -19,7 +19,6 @@ def lambda_handler(event: dict, context: object) -> None:
 
         for db_instance_name in db_instance_names:
             try:
-                # Call the appropriate method (start_db_instance or stop_db_instance)
                 getattr(rds_client, f"{action}_db_instance")(DBInstanceIdentifier=db_instance_name)
             except rds_client.exceptions.DBInstanceNotFoundFault as e:
                 print(e.response["Error"]["Message"])
